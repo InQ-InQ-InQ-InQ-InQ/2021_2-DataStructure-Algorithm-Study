@@ -36,3 +36,50 @@ func subSolution(){
 }
 
 print(result)
+
+
+
+/*
+import Foundation
+
+var N = Int(readLine()!)!
+var stack = [work]()
+var result = 0
+
+struct work{
+    let point: Int
+    var time: Int
+    init(_ point: Int, _ time: Int){
+        self.point = point
+        self.time = time
+    }
+   
+}
+
+for _ in (0..<N).reversed(){
+    let input = readLine()!.components(separatedBy: " ").map() {Int($0)}
+    
+    if input[0] == 0{
+        if stack.count > 0{
+            subSolution()
+        }
+    }else{
+        solution(input[1]!, input[2]!)
+        subSolution()
+    }
+}
+
+func solution(_ A: Int, _ T: Int){
+    stack.append(work(A, T))
+}
+
+func subSolution(){
+    stack[stack.count-1].time -= 1
+    if stack[stack.count-1].time == 0{
+        result += stack[stack.count-1].point
+        stack.removeLast()
+    }
+}
+
+print(result)
+*/
