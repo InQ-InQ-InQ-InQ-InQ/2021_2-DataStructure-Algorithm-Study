@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    // BFS.txt의 내용을 버퍼에 읽어옴
+    // BFS.txt의 내용을 입력 버퍼에 읽어옴
     freopen("BFS.txt", "rt", stdin);
     
     char ch[10] = { 0 };
