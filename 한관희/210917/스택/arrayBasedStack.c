@@ -58,5 +58,4 @@ void PrintStack(Stack *pstack)
         printf("%d ", pstack->stack[i]);
     }
     putchar('\n');
-
 }
