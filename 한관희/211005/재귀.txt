@@ -1,0 +1,2 @@
+base case : 재귀 호출에서 빠져나가기 위한 경우
+recursive case : 자신을 호출하는 함수를 포함하는 base case에 수렴하게 하는 조건
