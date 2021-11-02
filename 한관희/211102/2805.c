@@ -22,7 +22,7 @@ int BinarySearch(int* arr, int start, int end)
 
     // 가져가려는 길이보다 길면 mid(높이)를 더 높여 높이의 최대값을 구함
     if (sum >= m) {
-        if (res < mid) res = mid;
+        res = mid;
         BinarySearch(arr, mid + 1, end);
     }
     // 그렇지 않으면 높이를 낮춰 가져가려는 길이에 충족하도록 함
