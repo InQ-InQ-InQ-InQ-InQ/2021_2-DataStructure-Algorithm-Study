@@ -1,3 +1,5 @@
+// https://fennecfox38.github.io/2021/01/24/BOJ-11650.html
+
 #include <stdio.h>
 #include <malloc.h>
 
