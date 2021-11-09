@@ -44,7 +44,7 @@ public class Test_11650 {
         arr[j] = temp;
     }
 
-    public static void main(String[] agrs) {
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         int n = scan.nextInt();
         int[][] arr = new int[n][2];
