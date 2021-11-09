@@ -1,41 +1,31 @@
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h>
+#include <memory.h>
 
-typedef struct {
-    int x;
-    int y;
-} Coordinate;
+#define MAX_LENGTH 10
 
-// a의 값이 더 크면 1을 반환
-int Compare(const Coordinate* a, const Coordinate* b)
+void Swap(char** arr, int idx1, int idx2)
 {
-    if (a->x == b->x) {
-        if (a->y > b->y) return 1;
-        else return 0;
-    }
-    else if (a->x > b->x) return 1;
-    else return 0;
+    char tmp[MAX_LENGTH];
+    strcpy(tmp, arr[idx1]);
+    strcpy(arr[idx1], arr[idx2]);
+    strcpy(arr[idx2], tmp);
 }
 
-void Swap(Coordinate* arr, int idx1, int idx2)
+int Partition(char** arr, int left, int right)
 {
-    Coordinate tmp = arr[idx1];
-    arr[idx1] = arr[idx2];
-    arr[idx2] = tmp;
-}
-
-int Partition(Coordinate* arr, int left, int right)
-{
-    Coordinate pivot = arr[left]; // 정렬 중심점
+    char pivot[MAX_LENGTH]; // 정렬 중심점
+    strcpy(pivot, arr[left]);
     int low = left + 1; // 정렬 대상에서 pivot을 제외한 맨 왼쪽 지점
     int high = right; // 정렬 대상에서 pivot을 제외한 맨 오른쪽 지점
 
     while (low <= high) {
         // 피벗보다 큰 값(우선순위가 낮은 값) 탐색
-        while (Compare(&pivot, arr + low) && low <= right) low++;
+        while (low <= right && strcmp(pivot, arr[low]) >= 0) low++;
 
         // 피벗보다 작은 값(우선순위가 높은 값) 탐색
-        while (Compare(arr + high, &pivot)&& high >= left + 1) high--;
+        while (high >= left + 1 && strcmp(arr[high], pivot) >= 0) high--;
 
         // low와 high가 교차되지 않았으면 우선순위가 높은 값이 앞에 오도록 자리를 바꿈
         if (low <= high) Swap(arr, low, high);
@@ -45,11 +35,15 @@ int Partition(Coordinate* arr, int left, int right)
     // pivot을 기준으로 왼쪽은 우선순위가 높은 값, 오른쪽은 우선순위가 낮은 값이 오게 함
     Swap(arr, left, high);
 
+    // for (int i = 0; i < 5; i++) {
+    //     printf("%s\n", arr[i]);
+    // }
+
     // pivot의 위치를 반환함 (다음 정렬에서 pivot의 위치를 기준으로 좌우로 나누기 위함)
     return high;
 }
 
-void QuickSort(Coordinate* arr, int left, int right)
+void QuickSort(char** arr, int left, int right)
 {
     // pivot +- 1로 인해 left와 right가 역전되는 순간이 올 수 있음 
     if (left <= right) {
@@ -62,21 +56,25 @@ void QuickSort(Coordinate* arr, int left, int right)
 int main()
 {
     int n;
-    Coordinate* arr;
+    char** arr;
 
     scanf("%d", &n);
-    arr = (Coordinate*)malloc(n * sizeof(Coordinate));
+    getchar();
+    arr = (char*)malloc(n * sizeof(char));
     for (int i = 0; i < n; i++) {
-        scanf("%d %d", &arr[i].x, &arr[i].y);
+        arr[i] = (char**)malloc(MAX_LENGTH * sizeof(char*));
+        gets(arr[i]);
     }
 
     QuickSort(arr, 0, n - 1);
 
     for (int i = 0; i < n; i++) {
-        printf("%d %d\n", arr[i].x, arr[i].y);
+        printf("%s\n", arr[i]);
     }
 
-    free(arr);
+    for (int i = 0; i < n; i++) {
+        free(arr[i]);
+    }
 
     return 0;
 }

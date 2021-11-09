@@ -1,65 +1,82 @@
-// https://fennecfox38.github.io/2021/01/24/BOJ-11650.html
-
 #include <stdio.h>
 #include <malloc.h>
 
-typedef struct{ int x, y; } coordinate;
+typedef struct {
+    int x;
+    int y;
+} Coordinate;
 
-int compare(const coordinate* const a, const coordinate* const b)
+// a의 값이 더 크면 1을 반환
+int Compare(const Coordinate* a, const Coordinate* b)
 {
-    if(a->x == b->x) // x의 값이 동일할 경우 y값 비교 (같으면 0, 다르면 -1 반환)
-    	return (a->y > b->y ? 1 : (a->y == b->y ? 0 : -1));
-    else
-    	return (a->x > b->x ? 1 : -1);
+    if (a->x == b->x) {
+        if (a->y > b->y) return 1;
+        else return 0;
+    }
+    else if (a->x > b->x) return 1;
+    else return 0;
 }
 
-void quickSort(coordinate *array, int left, int right)
+void Swap(Coordinate* arr, int idx1, int idx2)
 {
-    int low = left, high = right;
-    coordinate pivot = array[(left + right) / 2]; // 가급적 중간에 해당하는 값을 피벗으로 선택함(성능을 높이기 위함)
-    coordinate tmp;
-    
-    // low와 high가 교차됐음은 모두 이미 pivot까지 탐색을 마치고 pivot을 지나쳐 서로 반대편에 진입한 것이므로 반복문을 탈출함
-    while(low <= high) {
+    Coordinate tmp = arr[idx1];
+    arr[idx1] = arr[idx2];
+    arr[idx2] = tmp;
+}
+
+int Partition(Coordinate* arr, int left, int right)
+{
+    Coordinate pivot = arr[left]; // 정렬 중심점
+    int low = left + 1; // 정렬 대상에서 pivot을 제외한 맨 왼쪽 지점
+    int high = right; // 정렬 대상에서 pivot을 제외한 맨 오른쪽 지점
+
+    while (low <= high) {
         // 피벗보다 큰 값(우선순위가 낮은 값) 탐색
-    	while(compare(&pivot, array + low) == 1) ++low;
+        while (Compare(&pivot, arr + low) && low <= right) low++;
 
         // 피벗보다 작은 값(우선순위가 높은 값) 탐색
-        while(compare(array + high, &pivot) == 1) --high;
-        
+        while (Compare(arr + high, &pivot)&& high >= left + 1) high--;
+
         // low와 high가 교차되지 않았으면 우선순위가 높은 값이 앞에 오도록 자리를 바꿈
-        if(low <= high) {
-            tmp = array[low];
-            array[low] = array[high];
-            array[high] = tmp;
-            ++low; --high;
-        }
+        if (low <= high) Swap(arr, low, high);
     }
-	
-    // 반복문을 탈출하면 high는 pivot 바로 전, low는 pivot 바로 이후로 오기 때문에
-    // pivotIndex를 쓰지 않고, low와 high를 재활용함
-    if(high > left) quickSort(array, left, high);
-    if(right > low) quickSort(array, low, right);
+
+    // pivot과 high의 자리를 바꿈으로써
+    // pivot을 기준으로 왼쪽은 우선순위가 높은 값, 오른쪽은 우선순위가 낮은 값이 오게 함
+    Swap(arr, left, high);
+
+    // pivot의 위치를 반환함 (다음 정렬에서 pivot의 위치를 기준으로 좌우로 나누기 위함)
+    return high;
+}
+
+void QuickSort(Coordinate* arr, int left, int right)
+{
+    // pivot +- 1로 인해 left와 right가 역전되는 순간이 올 수 있음 
+    if (left <= right) {
+        int pivot = Partition(arr, left, right);
+        QuickSort(arr, left, pivot - 1);
+        QuickSort(arr, pivot + 1, right);
+    }
 }
 
 int main()
 {
-    int N, i;
-    coordinate* array;
-    
-    scanf("%d", &N);
-    array = malloc(N * sizeof(coordinate));
-    for(i = 0; i < N; ++i) {
-    	scanf("%d %d", &(array[i].x), &(array[i].y));
+    int n;
+    Coordinate* arr;
+
+    scanf("%d", &n);
+    arr = (Coordinate*)malloc(n * sizeof(Coordinate));
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &arr[i].x, &arr[i].y);
     }
 
-    quickSort(array, 0, N - 1);
-    
-    for(i = 0; i < N; ++i) {
-    	printf("%d %d\n", array[i].x, array[i].y);
+    QuickSort(arr, 0, n - 1);
+
+    for (int i = 0; i < n; i++) {
+        printf("%d %d\n", arr[i].x, arr[i].y);
     }
 
-    free(array);
+    free(arr);
 
     return 0;
 }
