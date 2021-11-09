@@ -2,46 +2,46 @@ import java.util.*;
 
 public class Test_11650 {
     public static void quick_sort(int left, int right, int[][] arr) {
-        int i, j, pivot1, pivot2;
+        int i, j;
+        for (int k = 0; k < 5; k++) {
+            System.out.print(arr[k][0] + " ");
+            System.out.print(arr[k][1] + " ");
+        }
 
         if (left < right) {
-            i = left;
+            i = left + 1;
             j = right;
-            pivot1 = arr[left][0];
-            pivot2 = arr[left][1];
 
+            int pivot = left;
+            System.out.println(left + " " + right + " " + i + " " + j);
             while (i < j) {
-                while (arr[j][0] > pivot1) j--;
-                while (i < j && arr[i][0] <= pivot1) i++;
-
+                while (i < j && arr[i][0] <= arr[pivot][0] || (arr[i][0] == arr[pivot][0] && arr[i][1] > arr[pivot][1]))
+                    i++;
+                while (i < j && arr[j][0] >= arr[pivot][0] || (arr[j][0] == arr[pivot][0] && arr[j][1] > arr[pivot][1]))
+                    j--;
+                System.out.println(i + " " + j);
                 swap(arr, i, j);
             }
-            arr[left][0] = arr[i][0];
-            arr[left][1] = arr[i][1];
-            arr[i][0] = pivot1;
-            arr[i][1] = pivot2;
+            if (i != left + 1 || j != right) {
+                int[] tmp = arr[left];
+                arr[left] = arr[j];
+                arr[j] = tmp;
+            }
+            for (int k = 0; k < 5; k++) {
+                System.out.print(arr[k][0] + " ");
+                System.out.print(arr[k][1] + " ");
+            }
+            System.out.println(left + "" + right);
             quick_sort(left, i - 1, arr);
             quick_sort(i + 1, right, arr);
         }
     }
 
-    public static void sort_y(int[][] arr, int n) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++)
-                if ((arr[i][0] == arr[j][0]) && (arr[i][1] < arr[j][1])) {
-                    swap(arr, i, j);
-                }
-        }
-    }
-
     public static void swap(int arr[][], int i, int j) {
-        int temp;
-        temp = arr[i][0];
-        arr[i][0] = arr[j][0];
-        arr[j][0] = temp;
-        temp = arr[i][1];
-        arr[i][1] = arr[j][1];
-        arr[j][1] = temp;
+
+        int[] temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
     public static void main(String[] agrs) {
@@ -54,7 +54,6 @@ public class Test_11650 {
             arr[i][1] = scan.nextInt();
         }
         quick_sort(0, n - 1, arr);
-        sort_y(arr, n);
         for (int i = 0; i < n; i++) {
             System.out.print(arr[i][0] + " ");
             System.out.println(arr[i][1]);
