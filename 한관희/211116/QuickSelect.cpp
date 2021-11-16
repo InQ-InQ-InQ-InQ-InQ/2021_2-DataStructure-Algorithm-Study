@@ -42,7 +42,7 @@ int main()
     }
     cout << "\n";
 
-    cout << k << "st number: " << QuickSelect(vec, k - 1) << "\n";
+    cout << k << "st number: " << QuickSelect(vec, k) << "\n";
 
     sort(vec.begin(), vec.end());
 
