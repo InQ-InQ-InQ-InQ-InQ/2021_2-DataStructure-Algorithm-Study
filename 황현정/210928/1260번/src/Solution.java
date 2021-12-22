@@ -62,6 +62,7 @@ public class Solution {
         Arrays.fill(visted, false); //방문기록 초기화
         System.out.println();
         bfs_array(v, adjArray, visted);
+        System.out.println();
     }
 
 }
